@@ -30,12 +30,12 @@
             header.style.backgroundColor = blue;
         }
     }
-    window.setInterval(() => {
-        safari.self.addEventListener('message', messageEvent => {
-            if (messageEvent.name === 'keyPhrases') {
-                colorize(messageEvent.message);
-            }
-        });
-        safari.self.tab.dispatchMessage('getKeyPhrases');
-    }, 1000);
+    safari.self.addEventListener('message', messageEvent => {
+        if (messageEvent.name === 'keyPhrases') {
+            colorize(messageEvent.message);
+        }
+    });
+    window.setInterval(
+        () => safari.self.tab.dispatchMessage('getKeyPhrases'),
+        1000);
 })();
