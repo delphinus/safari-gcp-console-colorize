@@ -13,7 +13,7 @@
             return;
         }
         const header = document.querySelector(headerSelector);
-        if (!header) {
+        if (!header || header.style.backgroundColor === red) {
             return;
         }
         const projectName = header.querySelector(projectNameSelector);
@@ -26,8 +26,6 @@
             .some(phrase => projectNameValue.indexOf(phrase) !== -1);
         if (toColorize) {
             header.style.backgroundColor = red;
-        } else {
-            header.style.backgroundColor = blue;
         }
     }
     safari.self.addEventListener('message', messageEvent => {
