@@ -21,9 +21,8 @@
             return;
         }
         const projectNameValue = projectName.textContent;
-        const toColorize = keyPhrases.split(/,/).some((current, index, array) => {
-            return projectNameValue.indexOf(current) !== -1;
-        });
+        const toColorize = keyPhrases.split(/,/)
+            .some(phrase => projectNameValue.indexOf(phrase) !== -1);
         if (toColorize) {
             header.style.backgroundColor = red;
         } else {
