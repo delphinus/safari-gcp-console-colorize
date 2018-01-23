@@ -30,6 +30,10 @@
 				<string>scripts/colorize.js</string>
 			</array>
 		</dict>
+		<key>Whitelist</key>
+		<array>
+			<string>https://console.cloud.google.com/*</string>
+		</array>
 	</dict>
 	<key>DeveloperIdentifier</key>
 	<string>0000000000</string>
