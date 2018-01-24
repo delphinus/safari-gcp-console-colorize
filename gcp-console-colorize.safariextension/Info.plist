@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>delphinus</string>
 	<key>Builder Version</key>
-	<string>13604.4.7.1.6</string>
+	<string>13604.5.6</string>
 	<key>CFBundleDisplayName</key>
 	<string>GCP Console Colorize</string>
 	<key>CFBundleIdentifier</key>
@@ -27,7 +27,8 @@
 		<dict>
 			<key>Start</key>
 			<array>
-				<string>scripts/util.js</string>
+				<string>scripts/utils.js</string>
+				<string>scripts/events.js</string>
 				<string>scripts/colorize.js</string>
 			</array>
 		</dict>

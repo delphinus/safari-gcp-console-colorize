@@ -1,7 +1,5 @@
-Util.log('start');
-safari.application.addEventListener('message', messageEvent => {
-    if (messageEvent.name === 'getKeyPhrases') {
-        const keyPhrases = safari.extension.settings.keyPhrases;
-        messageEvent.target.page.dispatchMessage('keyPhrases', keyPhrases);
+Events.init({
+    'get-options': (request, response) => {
+        response(safari.extension.settings);
     }
 });
