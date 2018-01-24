@@ -1,5 +1,5 @@
 (() => {
-    const cLog = mes => console.log(`[GCP Console Colorize]: ${mes}`);
+    Util.log('loaded');
     const targetHost = 'console.cloud.google.com';
     if (window.top !== window || window.location.host !== targetHost) {
         return;

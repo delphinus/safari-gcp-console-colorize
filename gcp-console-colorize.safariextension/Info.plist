@@ -27,6 +27,7 @@
 		<dict>
 			<key>Start</key>
 			<array>
+				<string>scripts/util.js</string>
 				<string>scripts/colorize.js</string>
 			</array>
 		</dict>
