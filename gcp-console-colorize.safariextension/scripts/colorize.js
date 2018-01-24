@@ -14,7 +14,7 @@
                 return;
             }
             const header = document.querySelector(headerSelector);
-            if (!header || header.style.backgroundColor === red) {
+            if (!header) {
                 return;
             }
             const projectName = header.querySelector(projectNameSelector);
@@ -25,9 +25,7 @@
             const toColorize = keyPhrases.split(/,/)
                 .map(phrase => phrase.trim())
                 .some(phrase => projectNameValue.indexOf(phrase) !== -1);
-            if (toColorize) {
-                header.style.backgroundColor = red;
-            }
+            header.style.backgroundColor = toColorize ? red : blue;
         }),
         1000);
 })();

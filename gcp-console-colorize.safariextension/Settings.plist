@@ -4,11 +4,13 @@
 <array>
 	<dict>
 		<key>Key</key>
-		<string>keyPhrases</string>
+		<string>open_settings</string>
+		<key>Secure</key>
+		<true/>
 		<key>Title</key>
-		<string>プロジェクトIDに含まれる文字列（コンマ区切り）</string>
+		<string>設定画面を開く</string>
 		<key>Type</key>
-		<string>TextField</string>
+		<string>CheckBox</string>
 	</dict>
 </array>
 </plist>
