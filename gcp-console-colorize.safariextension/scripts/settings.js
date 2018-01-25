@@ -71,13 +71,16 @@
         });
     };
     const setEvents = $row => {
-        const $text = $('[data-color-text]', $row);
+        const $text = $('[data-phrase-text]', $row);
         const $color = $('[data-color-text]', $row);
         $text.on('change', updateSettings);
         $color.on('change', updateSettings);
         setSpectrum($color);
         $('[data-add-button]', $row).on('click', addRow);
-        $('[data-delete-button]', $row).on('click', () => $row.remove());
+        $('[data-delete-button]', $row).on('click', () => {
+            $row.remove();
+            updateSettings();
+        });
     };
     const $original = $(`[data-phrase=0]`).clone();
     const addRow = () => {
