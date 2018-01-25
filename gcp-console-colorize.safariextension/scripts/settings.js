@@ -45,13 +45,14 @@
         palette: palette(colors),
     });
     const start = options => {
-        Utils.log(options);
         const phrases = options.phrases ? JSON.parse(options.phrases) : [{}];
         setEvents($('[data-phrase=0]'));
-        setValues(phrases);
+        setPhrases(phrases);
+        setUseRegexp(options.useRegexp);
     };
+    const setUseRegexp = useRegexp => $('[name=useRegexp]').prop({checked: !!useRegexp}).on('click', updateSettings);
+    const getUseRegexp = () => $('[name=useRegexp]').is(':checked') ? 1 : 0;
     const updateSettings = () => {
-        Utils.log('update');
         const phrases = $('[data-phrase]').toArray().reduce((accumlator, phrase) => {
             const index = $(phrase).data('phrase');
             const text = $(`[name=phrase-${index}]`).val();
@@ -64,6 +65,7 @@
         Events.call({
             action: 'set-options',
             options: {
+                useRegexp: getUseRegexp(),
                 phrases: JSON.stringify(phrases.length ? phrases : [{}])
             }
         });
@@ -94,7 +96,7 @@
         setEvents($newRow);
         $('[data-phrase]').last().after($newRow);
     };
-    const setValues = phrases => phrases.forEach((phrase, index) => {
+    const setPhrases = phrases => phrases.forEach((phrase, index) => {
         if (!$(`[data-phrase=${index}]`).length) {
             addRow();
         }

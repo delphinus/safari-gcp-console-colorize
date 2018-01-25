@@ -9,10 +9,6 @@
     const projectNameSelector = '.p6n-project-switcher-project-name';
     window.setInterval(
         () => Events.call({action: 'get-options'}, options => {
-            const keyPhrases = options.keyPhrases;
-            if (!keyPhrases) {
-                return;
-            }
             const header = document.querySelector(headerSelector);
             if (!header) {
                 return;
@@ -22,10 +18,19 @@
                 return;
             }
             const projectNameValue = projectName.textContent;
-            const toColorize = keyPhrases.split(/,/)
-                .map(phrase => phrase.trim())
-                .some(phrase => projectNameValue.indexOf(phrase) !== -1);
-            header.style.backgroundColor = toColorize ? red : blue;
+            const useRegexp = !!options.useRegexp;
+            let phrases;
+            try {
+                phrases = JSON.parse(options.phrases);
+            } catch (e) {
+                phrases = [];
+            }
+            phrases.some(phrase => {
+                const text = phrase.text.trim();
+                const toColorize = useRegexp ? RegExp(text).test(projectNameValue) : projectNameValue.indexOf(text) !== -1;
+                header.style.backgroundColor = toColorize ? phrase.color : blue;
+                return toColorize;
+            });
         }),
         1000);
 })();
