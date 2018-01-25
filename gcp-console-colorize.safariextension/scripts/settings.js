@@ -44,6 +44,39 @@
         preferredFormat: 'hex',
         palette: palette(colors),
     });
+    const start = options => {
+        Utils.log(options);
+        const phrases = options.phrases ? JSON.parse(options.phrases) : [{}];
+        setEvents($('[data-phrase=0]'));
+        setValues(phrases);
+    };
+    const updateSettings = () => {
+        Utils.log('update');
+        const phrases = $('[data-phrase]').toArray().reduce((accumlator, phrase) => {
+            const index = $(phrase).data('phrase');
+            const text = $(`[name=phrase-${index}]`).val();
+            const color = $(`[name=color-${index}]`).val();
+            if (text.length && color.length) {
+                accumlator.push({text, color});
+            };
+            return accumlator;
+        }, []);
+        Events.call({
+            action: 'set-options',
+            options: {
+                phrases: JSON.stringify(phrases.length ? phrases : [{}])
+            }
+        });
+    };
+    const setEvents = $row => {
+        const $text = $('[data-color-text]', $row);
+        const $color = $('[data-color-text]', $row);
+        $text.on('change', updateSettings);
+        $color.on('change', updateSettings);
+        setSpectrum($color);
+        $('[data-add-button]', $row).on('click', addRow);
+        $('[data-delete-button]', $row).on('click', () => $row.remove());
+    };
     const $original = $(`[data-phrase=0]`).clone();
     const addRow = () => {
         const index = $('[data-phrase]').last().data('phrase') + 1;
@@ -56,24 +89,17 @@
             id: `color-${index}`,
             name: `color-${index}`
         });
-        setSpectrum($color);
-        $('[data-add-button]', $newRow).attr({name: `add-${index}`}).on('click', () => addRow());
-        $('[data-delete-button]', $newRow).attr({name: `delete-${index}`}).removeAttr('disabled').on('click', () => deleteRow(index));
+        $('[data-add-button]', $newRow).attr({name: `add-${index}`});
+        $('[data-delete-button]', $newRow).attr({name: `delete-${index}`}).removeAttr('disabled');
+        setEvents($newRow);
         $('[data-phrase]').last().after($newRow);
     };
-    const deleteRow = index => $(`[data-phrase=${index}]`).remove();
     const setValues = phrases => phrases.forEach((phrase, index) => {
         if (!$(`[data-phrase=${index}]`).length) {
             addRow();
         }
-        $(`[name=phrase-${index}]`).val(phrase.value);
-        setSpectrum($(`[name=color-${index}]`), phrase.color);
+        $(`[name=phrase-${index}]`).val(phrase.text);
+        $(`[name=color-${index}]`).spectrum('set', phrase.color);
     });
-    const start = options => {
-        Utils.log(options);
-        const phrases = options.phrases ? JSON.parse(options.phrases) : [{}];
-        setValues(phrases);
-        $('[name=add-0]').on('click', () => addRow());
-    };
     Events.call({action: 'get-options'}, start);
 })();
