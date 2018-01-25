@@ -5,9 +5,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
   <style>
-.sp-preview {
-  width: 200px;
-}
+    .sp-preview {
+      width: 150px;
+    }
   </style>
   <body>
     <div class="container">
@@ -30,10 +30,15 @@
             <div class="col-sm-4">
               <input type="text" class="form-control" id="phrase-0" name="phrase-0" data-phrase-text>
             </div>
-            <div class="col-sm-4">
-              <input type="text" id="color-0" name="color-0" data-color-text>
+            <div class="col-sm-3">
+              <label for="fgColor-0" class="col-form-label mr-3 text-right">文字</label>
+              <input type="text" id="fgColor-0" name="fgColor-0" data-fgColor-text>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
+              <label for="bgColor-0" class="col-form-label mr-3 text-right">背景</label>
+              <input type="text" id="bgColor-0" name="bgColor-0" data-bgColor-text>
+            </div>
+            <div class="col-sm-2">
               <button class="btn btn-success" type="button" name="add-0" data-add-button>追加</button>
               <button class="btn btn-danger" type="button" name="delete-0" data-delete-button disabled>削除</button>
             </div>

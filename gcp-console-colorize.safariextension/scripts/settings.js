@@ -22,7 +22,11 @@
         'black': '#000000',
         'white': '#ffffff'
     };
-    const paletteWidth = 4;
+    const randomColor = () => {
+        const values = Object.values(colors);
+        return values[Math.floor(Math.random() * values.length)];
+    };
+    const paletteWidth = 7;
     const palette = colors => Object.keys(colors).reduce((accumlator, key) => {
         const value = colors[key];
         const lastRow = accumlator[accumlator.length - 1];
@@ -34,7 +38,7 @@
         }
         return accumlator
     }, [[]]);
-    const setSpectrum = ($element, value) => $element.val(value || colors['red']).spectrum({
+    const setSpectrum = ($element, value) => $element.val(value).spectrum({
         showPaletteOnly: true,
         togglePaletteOnly: true,
         togglePaletteMoreText: 'もっと選ぶ',
@@ -56,9 +60,10 @@
         const phrases = $('[data-phrase]').toArray().reduce((accumlator, phrase) => {
             const index = $(phrase).data('phrase');
             const text = $(`[name=phrase-${index}]`).val();
-            const color = $(`[name=color-${index}]`).val();
-            if (text.length && color.length) {
-                accumlator.push({text, color});
+            const fgColor = $(`[name=fgColor-${index}]`).val();
+            const bgColor = $(`[name=bgColor-${index}]`).val();
+            if (text.length && fgColor.length && bgColor.length) {
+                accumlator.push({text, fgColor, bgColor});
             };
             return accumlator;
         }, []);
@@ -72,10 +77,13 @@
     };
     const setEvents = $row => {
         const $text = $('[data-phrase-text]', $row);
-        const $color = $('[data-color-text]', $row);
+        const $fgColor = $('[data-fgColor-text]', $row);
+        const $bgColor = $('[data-bgColor-text]', $row);
         $text.on('change', updateSettings);
-        $color.on('change', updateSettings);
-        setSpectrum($color);
+        $fgColor.on('change', updateSettings);
+        $bgColor.on('change', updateSettings);
+        setSpectrum($fgColor, colors['white']);
+        setSpectrum($bgColor, randomColor());
         $('[data-add-button]', $row).on('click', addRow);
         $('[data-delete-button]', $row).on('click', () => {
             $row.remove();
@@ -90,9 +98,13 @@
             id: `phrase-${index}`,
             name: `phrase-${index}`,
         });
-        const $color = $('[data-color-text]', $newRow).attr({
-            id: `color-${index}`,
-            name: `color-${index}`
+        const $fgColor = $('[data-fgColor-text]', $newRow).attr({
+            id: `fgColor-${index}`,
+            name: `fgColor-${index}`
+        });
+        const $bgColor = $('[data-bgColor-text]', $newRow).attr({
+            id: `bgColor-${index}`,
+            name: `bgColor-${index}`
         });
         $('[data-add-button]', $newRow).attr({name: `add-${index}`});
         $('[data-delete-button]', $newRow).attr({name: `delete-${index}`}).removeAttr('disabled');
@@ -104,7 +116,8 @@
             addRow();
         }
         $(`[name=phrase-${index}]`).val(phrase.text);
-        $(`[name=color-${index}]`).spectrum('set', phrase.color);
+        $(`[name=fgColor-${index}]`).spectrum('set', phrase.fgColor);
+        $(`[name=bgColor-${index}]`).spectrum('set', phrase.bgColor);
     });
     Events.call({action: 'get-options'}, start);
 })();

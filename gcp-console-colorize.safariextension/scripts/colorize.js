@@ -3,7 +3,7 @@
     if (window.top !== window || window.location.host !== targetHost) {
         return;
     }
-    const red = 'rgb(218, 67, 54)';
+    const white = 'rgb(0, 0, 0)';
     const blue = 'rgb(59, 120, 231)';
     const headerSelector = '.p6n-system-bar';
     const projectNameSelector = '.p6n-project-switcher-project-name';
@@ -28,7 +28,8 @@
             phrases.some(phrase => {
                 const text = phrase.text.trim();
                 const toColorize = useRegexp ? RegExp(text).test(projectNameValue) : projectNameValue.indexOf(text) !== -1;
-                header.style.backgroundColor = toColorize ? phrase.color : blue;
+                projectName.style.color = toColorize ? phrase.fgColor : white;
+                header.style.backgroundColor = toColorize ? phrase.bgColor : blue;
                 return toColorize;
             });
         }),
