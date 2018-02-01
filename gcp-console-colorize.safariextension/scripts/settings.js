@@ -84,7 +84,7 @@
         },
         () => window.location.reload()
     ));
-    const setUseRegexp = useRegexp => $('[name=useRegexp]').prop({checked: !!useRegexp}).on('click', updateSettings);
+    const setUseRegexp = useRegexp => $('[name=useRegexp]').prop({checked: !!useRegexp}).on('change', updateSettings);
     const getUseRegexp = () => $('[name=useRegexp]').is(':checked') ? 1 : 0;
     const updateSettings = () => {
         const phrases = $('[data-phrase]').toArray().reduce((accumlator, phrase) => {
