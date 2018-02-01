@@ -3,7 +3,7 @@
     if (window.top !== window || window.location.host !== targetHost) {
         return;
     }
-    const white = 'rgb(0, 0, 0)';
+    const white = 'rgb(255, 255, 255)';
     const blue = 'rgb(59, 120, 231)';
     const headerSelector = '.p6n-system-bar';
     const projectNameSelector = '.p6n-project-switcher-project-name';
