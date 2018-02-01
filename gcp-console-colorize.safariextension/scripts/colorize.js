@@ -25,6 +25,11 @@
             } catch (e) {
                 phrases = [];
             }
+            if (phrases.length === 0) {
+                projectName.style.color = white;
+                header.style.backgroundColor = blue;
+                return;
+            }
             phrases.some(phrase => {
                 const text = phrase.text.trim();
                 const toColorize = useRegexp ? RegExp(text).test(projectNameValue) : projectNameValue.indexOf(text) !== -1;
