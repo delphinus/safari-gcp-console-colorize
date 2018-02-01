@@ -7,6 +7,9 @@ Events.init({
         for (const key in request.options) {
             safari.extension.settings[key] = request.options[key];
         }
+        if (response) {
+            response(safari.extension.settings);
+        }
     }
 });
 

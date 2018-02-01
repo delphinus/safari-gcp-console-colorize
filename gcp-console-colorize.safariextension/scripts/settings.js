@@ -50,10 +50,21 @@
     });
     const start = options => {
         const phrases = options.phrases ? JSON.parse(options.phrases) : [{}];
+        setResetEvent($('[name=reset]'));
         setEvents($('[data-phrase=0]'));
         setPhrases(phrases);
         setUseRegexp(options.useRegexp);
     };
+    const setResetEvent = $button => $button.on('click', () => Events.call(
+        {
+            action: 'set-options',
+            options: {
+                useRegexp: false,
+                phrases: []
+            }
+        },
+        () => window.location.reload()
+    ));
     const setUseRegexp = useRegexp => $('[name=useRegexp]').prop({checked: !!useRegexp}).on('click', updateSettings);
     const getUseRegexp = () => $('[name=useRegexp]').is(':checked') ? 1 : 0;
     const updateSettings = () => {
