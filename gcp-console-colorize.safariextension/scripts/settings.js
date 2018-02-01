@@ -1,58 +1,76 @@
 (() => {
-    const colors = {
-        'red': '#f44336',
-        'pink': '#e91e63',
-        'purple': '#9c27b0',
-        'deep-purple': '#673ab7',
-        'indigo': '#3f51b5',
-        'blue': '#2196f3',
-        'light-blue': '#03a9f4',
-        'cyan': '#00bcd4',
-        'teal': '#009688',
-        'green': '#4caf50',
-        'light-green': '#8bc34a',
-        'lime': '#cddc39',
-        'yellow': '#ffeb3b',
-        'amber': '#ffc107',
-        'orange': '#ff9800',
-        'deep-orange': '#ff5722',
-        'brown': '#795548',
-        'grey': '#9e9e9e',
-        'blue-grey': '#607d8b',
-        'black': '#000000',
-        'white': '#ffffff'
-    };
-    const randomColor = () => {
-        const values = Object.values(colors);
-        return values[Math.floor(Math.random() * values.length)];
-    };
-    const paletteWidth = 7;
-    const palette = colors => Object.keys(colors).reduce((accumlator, key) => {
-        const value = colors[key];
-        const lastRow = accumlator[accumlator.length - 1];
-        if (lastRow.length == paletteWidth) {
-            const newRow = [value];
-            accumlator.push(newRow);
-        } else {
-            lastRow.push(value);
+    class Palette {
+        constructor() {
+            this.width = 7;
+            this.colors = {
+                'red': '#f44336',
+                'pink': '#e91e63',
+                'purple': '#9c27b0',
+                'deep-purple': '#673ab7',
+                'indigo': '#3f51b5',
+                'blue': '#2196f3',
+                'light-blue': '#03a9f4',
+                'cyan': '#00bcd4',
+                'teal': '#009688',
+                'green': '#4caf50',
+                'light-green': '#8bc34a',
+                'lime': '#cddc39',
+                'yellow': '#ffeb3b',
+                'amber': '#ffc107',
+                'orange': '#ff9800',
+                'deep-orange': '#ff5722',
+                'brown': '#795548',
+                'grey': '#9e9e9e',
+                'blue-grey': '#607d8b',
+                'black': '#000000',
+                'white': '#ffffff'
+            };
         }
-        return accumlator
-    }, [[]]);
-    const setSpectrum = ($element, value) => $element.val(value).spectrum({
-        showPaletteOnly: true,
-        togglePaletteOnly: true,
-        togglePaletteMoreText: 'もっと選ぶ',
-        togglePaletteLessText: '既定色',
-        showInitial: true,
-        showInput: true,
-        preferredFormat: 'hex',
-        palette: palette(colors),
-    });
+
+        randomColor() {
+            const values = Object.values(this.colors);
+            return values[Math.floor(Math.random() * values.length)];
+        }
+
+        matrix() {
+            return Object.keys(this.colors).reduce((accumlator, key) => {
+                const value = this.colors[key];
+                const lastRow = accumlator[accumlator.length - 1];
+                if (lastRow.length === this.width) {
+                    const newRow = [value];
+                    accumlator.push(newRow);
+                } else {
+                    lastRow.push(value);
+                }
+                return accumlator;
+            }, [[]]);
+        }
+
+        spectrum($element, value) {
+            $element.val(value).spectrum({
+                showPaletteOnly: true,
+                togglePaletteOnly: true,
+                togglePaletteMoreText: 'もっと選ぶ',
+                togglePaletteLessText: '既定色',
+                showInitial: true,
+                showInput: true,
+                preferredFormat: 'hex',
+                palette: this.matrix(),
+            });
+        }
+    }
+
     const start = options => {
-        const phrases = options.phrases ? JSON.parse(options.phrases) : [{}];
+        const palette = new Palette;
+        let phrases;
+        try {
+            phrases = JSON.parse(options.phrases);
+        } catch (e) {
+            phrases = [{}];
+        }
         setResetEvent($('[name=reset]'));
-        setEvents($('[data-phrase=0]'));
-        setPhrases(phrases);
+        setEvents($('[data-phrase=0]'), palette);
+        setPhrases(phrases, palette);
         setUseRegexp(options.useRegexp);
     };
     const setResetEvent = $button => $button.on('click', () => Events.call(
@@ -86,23 +104,23 @@
             }
         });
     };
-    const setEvents = $row => {
+    const setEvents = ($row, palette) => {
         const $text = $('[data-phrase-text]', $row);
         const $fgColor = $('[data-fgColor-text]', $row);
         const $bgColor = $('[data-bgColor-text]', $row);
         $text.on('change', updateSettings);
         $fgColor.on('change', updateSettings);
         $bgColor.on('change', updateSettings);
-        setSpectrum($fgColor, colors['white']);
-        setSpectrum($bgColor, randomColor());
-        $('[data-add-button]', $row).on('click', addRow);
+        palette.spectrum($fgColor, palette.colors.white);
+        palette.spectrum($bgColor, palette.randomColor());
+        $('[data-add-button]', $row).on('click', () => addRow(palette));
         $('[data-delete-button]', $row).on('click', () => {
             $row.remove();
             updateSettings();
         });
     };
     const $original = $(`[data-phrase=0]`).clone();
-    const addRow = () => {
+    const addRow = palette => {
         const index = $('[data-phrase]').last().data('phrase') + 1;
         const $newRow = $original.clone().attr({'data-phrase': index});
         $('[data-phrase-text]', $newRow).attr({
@@ -119,12 +137,12 @@
         });
         $('[data-add-button]', $newRow).attr({name: `add-${index}`});
         $('[data-delete-button]', $newRow).attr({name: `delete-${index}`}).removeAttr('disabled');
-        setEvents($newRow);
+        setEvents($newRow, palette);
         $('[data-phrase]').last().after($newRow);
     };
-    const setPhrases = phrases => phrases.forEach((phrase, index) => {
+    const setPhrases = (phrases, palette) => phrases.forEach((phrase, index) => {
         if (!$(`[data-phrase=${index}]`).length) {
-            addRow();
+            addRow(palette);
         }
         $(`[name=phrase-${index}]`).val(phrase.text);
         $(`[name=fgColor-${index}]`).spectrum('set', phrase.fgColor);
