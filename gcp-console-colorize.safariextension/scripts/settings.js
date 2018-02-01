@@ -147,7 +147,7 @@
         }
         $(`[name=phrase-${index}]`).val(phrase.text);
         $(`[name=fgColor-${index}]`).spectrum('set', phrase.fgColor || palette.colors.white);
-        $(`[name=bgColor-${index}]`).spectrum('set', phrase.bgColor || paleete.defaultColor);
+        $(`[name=bgColor-${index}]`).spectrum('set', phrase.bgColor || palette.defaultColor);
     });
     Events.call({action: 'get-options'}, start);
 })();
