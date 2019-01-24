@@ -1,0 +1,19 @@
+{
+  "name": "safari-gcp-console-colorize",
+  "version": "0.4.1",
+  "description": "Safari extension to colorize the header of Google Cloud Console",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delphinus/safari-gcp-console-colorize.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/delphinus/safari-gcp-console-colorize/issues"
+  },
+  "homepage": "https://github.com/delphinus/safari-gcp-console-colorize#readme"
+}
